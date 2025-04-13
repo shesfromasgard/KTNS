@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <numeric>
 
 using namespace std;
 
@@ -21,7 +22,7 @@ vector<int> executionTime;
 ifstream input("input.txt");
 ofstream output("output.txt");
 
-long KTNS(bool debug);
+long KTNS(const vector<int> processos, bool debug);
 
 int main() {
 
@@ -62,22 +63,153 @@ int main() {
 
     output << "Deu super certo!" << endl;
 
-    KTNS(true);
+    vector<int> processos(n);
+
+    iota(processos.begin(), processos.end(), 0);
+
+    output << KTNS(processos, true);
 
     return 0;
 }
 
-long KTNS(bool debug = false) {
+long KTNS(const vector<int> processos, bool debug = false) {
 
-    vector<int> loaded(n, 0);
-    int u = 0;
-
-    int priorities[n][m];
-    int magazine[n][m];
-
-    if(debug) {
-        output << endl << "Teste" << endl;
+    if(processos.size() == 0) {
+        return 0;
     }
 
-    return 0;
+    vector<int> loaded(m, 0);
+    int u = 0; // Ferramentas no magazine
+
+    int priorities[m][processos.size()];
+    int magazine[m][processos.size()];
+
+	if (debug) {
+        cout << std::endl << "Matriz de Ferramentas no KTNS" << std::endl;
+        for (unsigned j = 0; j < m; ++j){
+            for (unsigned i = 0; i < n; ++i){
+                cout << matrix[j][i] << " ";
+            }
+            cout << endl;
+        }
+        cout << " --------------------- " << endl;
+        cout << "Processos" << endl;
+        for (unsigned i = 0; i < processos.size(); ++i) {
+            cout << processos[i] << " ";
+        }
+        cout << endl;
+        cout << endl;
+    }
+
+    cout << "Magazine" << endl << endl;
+
+    for(unsigned j = 0; j < m; ++j) {
+        loaded[j] = matrix[j][processos[0]];
+        if(matrix[j][processos[0]] == 1)
+            ++u;
+        for(unsigned i = 0; i < processos.size(); ++i) {
+            magazine[j][i] = matrix[j][processos[i]];
+            if(debug)
+                cout << magazine[j][i] << " ";
+        }
+        if(debug) {
+            cout << endl;
+        }
+    }
+
+    cout << endl << endl;
+
+    for (unsigned i = 0; i < m; ++i){
+		for (unsigned j = 0; j < processos.size(); ++j){
+			if (magazine[i][j] == 1)
+				priorities[i][j] = 0;
+			else {
+				int proxima = 0;
+				bool usa = false;
+				for (unsigned k= j + 1; k< processos.size(); ++k){
+					++proxima;
+					if (magazine[i][k] == 1){
+						usa = true;
+						break;
+					}
+				}
+				if (usa)
+					priorities[i][j]=proxima;
+				else
+					priorities[i][j]=-1;
+			}
+		}
+	}
+
+    if (debug) {
+
+        for (unsigned j = 0; j < m; ++j) {
+            for (unsigned i = 0; i < processos.size(); ++i) {
+                    cout << priorities[j][i] << " ";
+                }
+                cout << endl;
+        }
+    
+        cout << "Ferramentas carregadas: " << endl;
+        for (unsigned j=0; j < m; j++) {
+            if (loaded[j] == 33) exit(0);
+                    cout << loaded[j] << endl;
+        }
+    }
+
+    cout << endl << endl;
+
+    if (debug) {
+        cout << u << " carregadas na primeira tarefa" << endl;
+    }
+
+    int trocas = 0;
+	for (unsigned i = 1; i<processos.size(); ++i) {
+		for (unsigned j = 0; j < m; ++j){
+			if ((magazine[j][i] == 1) && (loaded[j] == 0)){
+				loaded[j] = 1;
+				++u;
+			}
+		}
+		if (debug) {
+			cout << u << " Ferramentas carregadas" << endl;
+		}
+		while (u > c){
+			int maior = 0;
+			int pMaior = -1;
+			for (unsigned j=0; j < m; ++j) {
+				if (magazine[j][i] != 1){ // Ferramenta não utilizada pelo processo atual
+					if ((loaded[j] == 1) && (priorities[j][i] == -1)) { // Essa ferramenta não será mais utilizada e é um excelente candidato a remoção
+						pMaior = j;
+						break;
+					} else {
+						if ((priorities[j][i] > maior) && loaded[j] == 1) {
+							maior = priorities[j][i];
+							pMaior = j;
+						}
+					}
+				}
+			}
+			loaded[pMaior] = 0;
+			if (debug) {
+				cout << "Retirou " << i << ":" << pMaior << endl;
+			}
+			--u;
+			++trocas;
+			if (debug) {
+				cout << trocas << " trocas " << endl;
+			}
+		}
+		if (debug) {
+            cout << "Ferramentas carregadas: " << endl;
+            for (unsigned j=0; j < m; ++j) {
+                cout << loaded[j] << endl;
+            }
+	    }
+	}
+	if (debug) {
+	    cout << ": " << trocas << "trocas" << endl;
+	}
+
+    return trocas + c;
 }
