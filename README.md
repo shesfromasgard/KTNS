@@ -6,6 +6,8 @@ Esse código foi adaptado do KTNS disponibilizado por [Soares e Carvalho (2020)]
 
 As instâncias usadas para teste nesse protótipo foram tiradas da tabela 1 de [Crama et al. (1994)](https://doi.org/10.1007/BF01324874) e estão localizadas na pasta [input](https://github.com/shesfromasgard/KTNS/tree/main/input). Caso queira testar outras instâncias outras instâncias para teste, adicione-as à sua pasta de entrada. As soluções serão impressas em arquivos de texto individuais na pasta de saída escolhida no comando de execução.
 
+Caso tenha alguma dúvida sobre o problema ou implementação, mande-me uma mensagem no meu endereço de e-mail[^1], responderei assim que possível.
+
 Para compilar o código, use o comando:
 
 ```
@@ -18,3 +20,4 @@ Para rodar o código, use o comando:
 .\run .\{diretório_instâncias_entrada} .\{diretório_instâncias_saída)
 ```
 
+[^1]: lauracsrocha0@gmail.com
