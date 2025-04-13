@@ -1,4 +1,6 @@
-# KTNS
+# Keep Tools Needes Soonest (KTNS)
+
+O KTNS disponibilizado neste repositório é para resolução do subproblema de ferramentas (Tooling Problem, TP) do Problema de Sequenciamento de Tarefas e Trocas de Ferramentas (Job Sequencing and Tool Switching Problem, SSP).
 
 Para compilar o código, use o comando:
 
