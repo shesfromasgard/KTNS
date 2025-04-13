@@ -19,8 +19,6 @@ unsigned int m, n, c;
 // executionTime - tempo de execução de cada tarefa [n]
 
 vector<vector<int>> matrix;
-vector<int> toolLife;
-vector<int> executionTime;
 
 long KTNS(const vector<int> processos, bool debug);
 
@@ -68,8 +66,6 @@ int main(int argc, char *argv[]) {
             input >> m >> n >> c;
 
             matrix.resize(m, vector<int>(n));
-            toolLife.resize(m);
-            executionTime.resize(n);
 
             for (int j = 0; j < m; ++j)
                 for (int k = 0; k < n; ++k)
